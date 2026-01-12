@@ -43,7 +43,6 @@ cd_repo_root() {
 # Package manager + node tools
 # --------
 pm() {
-  # Use PM env var if set, default npm.
   echo "${PM:-npm}"
 }
 
@@ -58,8 +57,6 @@ ensure_node() {
 }
 
 npm_run() {
-  # Runs a package.json script via the configured package manager.
-  # Works for npm/pnpm/yarn with common syntax.
   local script="$1"; shift || true
   local manager
   manager="$(pm)"
@@ -90,21 +87,31 @@ pid_file() {
   echo ".devserver.pid"
 }
 
+is_pid() {
+  [[ "${1:-}" =~ ^[0-9]+$ ]]
+}
+
 is_running() {
-  local pid="$1"
-  [[ -n "${pid:-}" ]] || return 1
+  local pid="${1:-}"
+  is_pid "$pid" || return 1
   kill -0 "$pid" >/dev/null 2>&1
 }
 
 read_pid() {
-  local f
+  local f pid
   f="$(pid_file)"
   [[ -f "$f" ]] || return 1
-  cat "$f"
+
+  # Trim whitespace/newlines.
+  pid="$(tr -d '[:space:]' < "$f" || true)"
+  is_pid "$pid" || return 1
+
+  echo "$pid"
 }
 
 write_pid() {
   local pid="$1"
+  is_pid "$pid" || die "Refusing to write non-numeric pid: $pid"
   echo "$pid" > "$(pid_file)"
 }
 
