@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: portfolio
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d portfolio"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  app:
+    image: node:20-bullseye-slim
+    working_dir: /app
+    command: sh -lc "corepack enable && pnpm install && pnpm prisma generate && pnpm exec next dev /app -H 0.0.0.0 -p 3000"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/portfolio?schema=public
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: replace-me-with-a-long-random-string
+      GITHUB_CLIENT_ID: replace-me
+      GITHUB_CLIENT_SECRET: replace-me
+    ports:
+      - "3000:3000"
+      - "5555:5555" # prisma studio (optional)
+    volumes:
+      - ./:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:

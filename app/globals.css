@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 250 250 252;
+  --surface: 255 255 255;
+  --text: 18 18 22;
+  --muted: 90 90 105;
+  --border: 220 220 230;
+  --accent: 80 120 255;
+  --accent-2: 60 190 160;
+  --ring: 80 120 255;
+}
+
+[data-theme="forest"],
+[data-theme="sky"],
+[data-theme="earth"],
+[data-theme="dark"],
+[data-theme="light"] {
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
+}
+
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
+}
