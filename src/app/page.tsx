@@ -23,6 +23,7 @@ type Experience = {
   start: string;
   end: string;
   bullets: string[];
+  links?: Link[];
 };
 
 const PROFILE = {
@@ -95,13 +96,7 @@ const projects: Project[] = [
 const skills: SkillGroup[] = [
   {
     group: "Programming",
-    items: [
-      "Python (Pandas, NumPy)",
-      "Scala",
-      "Java",
-      "Shell Scripting",
-      "R",
-    ],
+    items: ["Python (Pandas, NumPy)", "Scala", "Java", "Shell Scripting", "R"],
   },
   {
     group: "Big Data & Streaming",
@@ -178,17 +173,11 @@ const certifications: string[] = [
 
 const education: { school: string; detail: string; years: string }[] = [
   { school: "Webster State University", detail: "Masters", years: "2023 – 2024" },
-  {
-    school: "Anna University – MIT Campus",
-    detail: "Bachelors",
-    years: "2016 – 2020",
-  },
+  { school: "Anna University – MIT Campus", detail: "Bachelors", years: "2016 – 2020" },
 ];
 
 function Container({ children }: { children: ReactNode }) {
-  return (
-    <div className="mx-auto max-w-6xl px-6 py-10 md:py-16">{children}</div>
-  );
+  return <div className="mx-auto max-w-6xl px-6 py-10 md:py-16">{children}</div>;
 }
 
 function Section({
@@ -206,13 +195,9 @@ function Section({
     <section id={id} className="scroll-mt-24">
       <div className="mb-8">
         {eyebrow ? (
-          <p className="text-sm font-medium tracking-wide text-zinc-400">
-            {eyebrow}
-          </p>
+          <p className="text-sm font-medium tracking-wide text-zinc-400">{eyebrow}</p>
         ) : null}
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-50">
-          {title}
-        </h2>
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-50">{title}</h2>
         <div className="mt-3 h-px w-full bg-zinc-800" />
       </div>
       {children}
@@ -232,13 +217,7 @@ function Dot() {
   return <span className="text-zinc-700">/</span>;
 }
 
-function TextLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: ReactNode;
-}) {
+function TextLink({ href, children }: { href: string; children: ReactNode }) {
   return (
     <a
       href={href}
@@ -253,11 +232,7 @@ function TextLink({
 }
 
 function Card({ children }: { children: ReactNode }) {
-  return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/20 p-6">
-      {children}
-    </div>
-  );
+  return <div className="rounded-2xl border border-zinc-800 bg-zinc-900/20 p-6">{children}</div>;
 }
 
 function BadgeRow({ items }: { items: string[] }) {
@@ -282,32 +257,22 @@ export default function Page() {
             </div>
             <div>
               <p className="text-sm text-zinc-400">{PROFILE.role}</p>
-              <h1 className="text-lg font-semibold tracking-tight text-zinc-50">
-                {PROFILE.name}
-              </h1>
+              <h1 className="text-lg font-semibold tracking-tight text-zinc-50">{PROFILE.name}</h1>
             </div>
           </div>
 
           <nav className="flex flex-wrap gap-3 text-sm text-zinc-300">
-            <a className="hover:text-white" href="#projects">
-              Projects
-            </a>
+            <a className="hover:text-white" href="#projects">Projects</a>
             <Dot />
-            <a className="hover:text-white" href="#skills">
-              Skills
-            </a>
+            <a className="hover:text-white" href="#skills">Skills</a>
             <Dot />
-            <a className="hover:text-white" href="#experience">
-              Experience
-            </a>
+            <a className="hover:text-white" href="#experience">Experience</a>
             <Dot />
-            <a className="hover:text-white" href="#education">
-              Education
-            </a>
+            <a className="hover:text-white" href="#education">Education</a>
             <Dot />
-            <a className="hover:text-white" href="#contact">
-              Contact
-            </a>
+            <a className="hover:text-white" href="#contact">Contact</a>
+            <Dot />
+            <a className="hover:text-white" href="/timeline">Timeline</a>
           </nav>
         </header>
 
@@ -319,9 +284,7 @@ export default function Page() {
             Backend engineering, streaming, and data platforms on AWS.
           </h2>
 
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-zinc-300">
-            {PROFILE.summary}
-          </p>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-zinc-300">{PROFILE.summary}</p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <a
@@ -336,6 +299,13 @@ export default function Page() {
               className="inline-flex w-fit items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/40 px-5 py-3 text-sm font-semibold text-zinc-100 hover:bg-zinc-900"
             >
               Contact
+            </a>
+
+            <a
+              href="/timeline"
+              className="inline-flex w-fit items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/40 px-5 py-3 text-sm font-semibold text-zinc-100 hover:bg-zinc-900"
+            >
+              Timeline template
             </a>
 
             <div className="flex flex-wrap gap-2 sm:ml-auto">
@@ -359,24 +329,16 @@ export default function Page() {
 
         <div className="mt-14 grid gap-14">
           {/* Projects */}
-          <Section
-            id="projects"
-            title="Projects"
-            eyebrow="Selected work"
-          >
+          <Section id="projects" title="Projects" eyebrow="Selected work">
             <div className="grid gap-6 md:grid-cols-2">
               {projects.map((p) => (
                 <article
                   key={p.title}
                   className="rounded-2xl border border-zinc-800 bg-zinc-900/20 p-6 hover:bg-zinc-900/30"
                 >
-                  <h3 className="text-lg font-semibold text-zinc-50">
-                    {p.title}
-                  </h3>
+                  <h3 className="text-lg font-semibold text-zinc-50">{p.title}</h3>
 
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-                    {p.description}
-                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-zinc-300">{p.description}</p>
 
                   <ul className="mt-4 space-y-2 text-sm text-zinc-300">
                     {p.highlights.map((h) => (
@@ -412,9 +374,7 @@ export default function Page() {
             <div className="grid gap-6 md:grid-cols-2">
               {skills.map((s) => (
                 <Card key={s.group}>
-                  <h3 className="text-sm font-semibold text-zinc-50">
-                    {s.group}
-                  </h3>
+                  <h3 className="text-sm font-semibold text-zinc-50">{s.group}</h3>
                   <ul className="mt-4 grid gap-2 text-sm text-zinc-300 sm:grid-cols-2">
                     {s.items.map((i) => (
                       <li key={i} className="flex gap-2">
@@ -438,9 +398,7 @@ export default function Page() {
                       <h3 className="text-base font-semibold text-zinc-50">
                         {e.role} · {e.company}
                       </h3>
-                      {e.location ? (
-                        <p className="text-sm text-zinc-400">{e.location}</p>
-                      ) : null}
+                      {e.location ? <p className="text-sm text-zinc-400">{e.location}</p> : null}
                     </div>
                     <p className="text-sm text-zinc-400">
                       {e.start} — {e.end}
@@ -472,9 +430,7 @@ export default function Page() {
             <div className="grid gap-6 md:grid-cols-2">
               {education.map((ed) => (
                 <Card key={ed.school}>
-                  <h3 className="text-base font-semibold text-zinc-50">
-                    {ed.school}
-                  </h3>
+                  <h3 className="text-base font-semibold text-zinc-50">{ed.school}</h3>
                   <p className="mt-2 text-sm text-zinc-300">{ed.detail}</p>
                   <p className="mt-1 text-sm text-zinc-400">{ed.years}</p>
                 </Card>
@@ -486,8 +442,7 @@ export default function Page() {
           <Section id="contact" title="Contact" eyebrow="Let’s connect">
             <Card>
               <p className="text-sm leading-relaxed text-zinc-300">
-                Best way to reach me is email. Happy to share details, walk through
-                projects, or discuss backend/data platform work.
+                Best way to reach me is email. Happy to share details, walk through projects, or discuss backend/data platform work.
               </p>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -508,6 +463,7 @@ export default function Page() {
                     <TextLink href={PROFILE.links.github}>GitHub</TextLink>
                     <TextLink href={PROFILE.links.linkedin}>LinkedIn</TextLink>
                     <TextLink href={PROFILE.links.projectRepo}>Featured repo</TextLink>
+                    <TextLink href="/timeline">Timeline</TextLink>
                   </p>
                 </div>
               </div>
@@ -521,11 +477,9 @@ export default function Page() {
 
         <footer className="mt-16 border-t border-zinc-900 pt-8 text-xs text-zinc-500">
           <p>
-            © {new Date().getFullYear()} {PROFILE.name}. Built with Next.js,
-            TypeScript, and Tailwind.
+            © {new Date().getFullYear()} {PROFILE.name}. Built with Next.js, TypeScript, and Tailwind.
           </p>
         </footer>
-        
       </Container>
     </main>
   );
